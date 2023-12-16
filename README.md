@@ -383,34 +383,130 @@ Soal:
 Agar topologi yang kalian buat dapat mengakses keluar, kalian diminta untuk mengkonfigurasi Aura menggunakan iptables, tetapi tidak ingin menggunakan MASQUERADE.
 
 <h4>Solusi</h4> <a name="solusi1"></a>
+
+Aura:
+```
+IPETH0="$(ip -br a | grep eth0 | awk '{print $NF}' | cut -d'/' -f1)"
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$IPETH0" -s 10.43.0.0/20
+```
+
 <h4>Testing</h4> <a name="testing1"></a>
+
+GrobeForest:ping google.com
+
+<img width="470" alt="soal 1" src="images/01.png">
 
 <h3>Soal 2</h3>
 
 Kalian diminta untuk melakukan drop semua TCP dan UDP kecuali port 8080 pada TCP.
 
 <h4>Solusi</h4> <a name="solusi2"></a>
+
+TurkRegion:
+```
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+
+apt-get update
+apt-get install netcat -y
+
+iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
+iptables -A INPUT -p tcp -j DROP
+iptables -A INPUT -p udp -j DROP
+```
+LaubHills:
+```
+echo 'nameserver 192.168.122.1' > /etc/resolv.conf
+
+apt-get update
+apt-get install netcat -y
+```
+
 <h4>Testing</h4> <a name="testing2"></a>
+
+TurkRegion: nc -l -p 8080
+LaubHills: nc 10.43.8.2 8080
+
+<img width="470" alt="soal 1" src="images/01.png">
+
+<img width="470" alt="soal 1" src="images/01.png">
+
+TurkRegion: nc -l -p 1234
+LaubHills: nc 10.43.8.2 1234
+
+<img width="470" alt="soal 1" src="images/01.png">
+
+<img width="470" alt="soal 1" src="images/01.png">
 
 <h3>Soal 3</h3>
 
 Kepala Suku North Area meminta kalian untuk membatasi DHCP dan DNS Server hanya dapat dilakukan ping oleh maksimal 3 device secara bersamaan, selebihnya akan di drop.
 
 <h4>Solusi</h4> <a name="solusi3"></a>
+
+DNS Server (Richter):
+```
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+
+DHCP Server (Revolte):
+```
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
+```
+
 <h4>Testing</h4> <a name="testing3"></a>
+
+Hasil Testing pada 4 Client: ping 10.43.0.22
+
+<img width="470" alt="soal 1" src="images/01.png">
 
 <h3>Soal 4</h3>
 
 Lakukan pembatasan sehingga koneksi SSH pada Web Server hanya dapat dilakukan oleh masyarakat yang berada pada GrobeForest.
 
 <h4>Solusi</h4> <a name="solusi4"></a>
+
+Sein dan Stark:
+iptables -A INPUT -p tcp --dport 22 -s 10.43.4.0 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j DROP
+
 <h4>Testing</h4> <a name="testing4"></a>
+
+GrobeForest: 
+nmap 10.43.4.3 -p 22
+nmap 10.43.0.10 -p 22
+
+<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/01.png">
 
 <h3>Soal 5</h3>
 
 Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Senin-Jumat pada pukul 08.00-16.00.
 
 <h4>Solusi</h4> <a name="solusi5"></a>
+
+Sein dan Stark:
+```
+iptables -A INPUT -p tcp --dport 80 -m time --weekdays Mon,Tue,Wed,Thu,Fri --timestart 08:00 --timestop 16:00 -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -j DROP
+```
+
+<h4>Testing</h4> <a name="testing5"></a>
+
+Testing di hari kerja (GrobeForest): 
+```
+date --s “14 Dec 2023 10:00:00”
+nmap 10.43.4.3 22
+```
+<img width="470" alt="soal 1" src="images/01.png">
+
+Testing di hari Minggu(GrobeForest:  
+```
+date --s “17 Dec 2023 10:00:00”
+nmap 10.43.4.3 22
+```
+
 <h4>Testing</h4> <a name="testing5"></a>
 
 <h3>Soal 6</h3>
@@ -418,7 +514,29 @@ Selain itu, akses menuju WebServer hanya diperbolehkan saat jam kerja yaitu Seni
 Lalu, karena ternyata terdapat beberapa waktu di mana network administrator dari WebServer tidak bisa stand by, sehingga perlu ditambahkan rule bahwa akses pada hari Senin - Kamis pada jam 12.00 - 13.00 dilarang (istirahat maksi cuy) dan akses di hari Jumat pada jam 11.00 - 13.00 juga dilarang (maklum, Jumatan rek).
 
 <h4>Solusi</h4> <a name="solusi6"></a>
+
+Sein dan Stark:
+```
+iptables -A INPUT -p tcp --dport 80 -m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu -j DROP
+
+iptables -A INPUT -p tcp --dport 80 -m time --timestart 11:00 --timestop 13:00 --weekdays Fri -j DROP
+```
+
 <h4>Testing</h4> <a name="testing6"></a>
+
+Testing di hari Kamis jam 12.15 (jam istirahat)GrobeForest: 
+```
+nmap 10.43.4.3 -p 22
+```
+
+<img width="470" alt="soal 1" src="images/01.png">
+
+Testing saat Jumatan:
+```
+nmap 10.43.4.3 -p 22
+```
+
+<img width="470" alt="soal 1" src="images/01.png">
 
 <h3>Soal 7</h3>
 
@@ -432,22 +550,71 @@ Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Se
 Karena berbeda koalisi politik, maka subnet dengan masyarakat yang berada pada Revolte dilarang keras mengakses WebServer hingga masa pencoblosan pemilu kepala suku 2024 berakhir. Masa pemilu (hingga pemungutan dan penghitungan suara selesai) kepala suku bersamaan dengan masa pemilu Presiden dan Wakil Presiden Indonesia 2024.
 
 <h4>Solusi</h4> <a name="solusi8"></a>
+
+Sein dan Stark:
+```
+iptables -A INPUT -p tcp -s 10.43.0.20/30 --dport 80 -m time --datestart "2023-10-19T00:00" --datestop "2024-02-15T00:00" -j DROP
+```
+
 <h4>Testing</h4> <a name="testing8"></a>
+
+Catatn: IP Sein 10.43.4.3 dan IP Stark 10.43.0.10
+
+Waktu Masa Pemilu (14 Desember 2023) di Revolte
+
+<img width="470" alt="soal 1" src="images/01.png">
+
+Di Luar Masa Pemilu (14 Desember 2025) di Revolte
+
+<img width="470" alt="soal 1" src="images/01.png">
+
+Waktu Masa Pemilu selain Revolte:
+
+<img width="470" alt="soal 1" src="images/01.png">
+
+Di Luar Masa Pemilu selain Revolte:
+
+<img width="470" alt="soal 1" src="images/01.png">
 
 <h3>Soal 9</h3>
 
 Sadar akan adanya potensial saling serang antar kubu politik, maka WebServer harus dapat secara otomatis memblokir  alamat IP yang melakukan scanning port dalam jumlah banyak (maksimal 20 scan port) di dalam selang waktu 10 menit. 
 
 <h4>Solusi</h4> <a name="solusi9"></a>
+
+Sein & Stark:
+```
+iptables -F
+iptables -N scan_port
+iptables -A INPUT -m recent --name scan_port --update --seconds 600 --hitcount 20 -j DROP
+iptables -A FORWARD -m recent --name scan_port --update --seconds 600 --hitcount 20 -j DROP
+iptables -A INPUT -m recent --name scan_port --set -j ACCEPT
+iptables -A FORWARD -m recent --name scan_port --set -j ACCEPT
+```
+
 <h4>Testing</h4> <a name="testing9"></a>
+
+GrabeForest: 
+```
+ping 10.43.4.3 (server Sein) 
+```
+
+<img width="470" alt="soal 1" src="images/01.png">
 
 <h3>Soal 10</h3>
 
 Karena kepala suku ingin tau paket apa saja yang di-drop, maka di setiap node server dan router ditambahkan logging paket yang di-drop dengan standard syslog level. 
 
 <h4>Solusi</h4> <a name="solusi10"></a>
+
+Semua router dan server: 
+```
+iptables -A INPUT -j LOG --log-level info --log-prefix "DROPPED: "
+```
+
 <h4>Testing</h4> <a name="testing10"></a>
 
+<img width="470" alt="soal 1" src="images/01.png">
 (clue: test dengan nmap)
 
 
