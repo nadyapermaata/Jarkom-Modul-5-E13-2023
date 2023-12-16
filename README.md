@@ -27,9 +27,9 @@ Sebagai persiapan, terdapat beberapa poin yang harus dilakukan yang tertuang dal
  
 Tugas pertama yaitu membuat topologi jaringan sesuai dengan rancangan yang diberikan seperti di bawah ini:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/topologi.png">
 
-Hasil Topologi yang sudaah dibuat:
+Hasil Topologi yang sudah dibuat:
 
 <img width="470" alt="soal 1" src="images/01.png">
 
@@ -49,19 +49,19 @@ Untuk menghitung rute-rute yang diperlukan, gunakan perhitungan dengan metode VL
 
 - Pengelompokan pada topologi yang telah dibuat:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/labelling.png">
 
 - Selanjutnya, dilakukan analisis sehingga didapatkan hasil sebagai berikut:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/ip.png">
 
 - Berdasarkan total IP host dan netmask yang dibutuhkan, root subnet yang dibentuk memiliki NID 10.43.0.0 dengan netmask /20 dan jumlah IP Host sebanyak 1871. Kemudian, alokasi IP Address secara keseluruhan dapat dibuat menjadi seperti berikut.
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/NABA.png">
 
 - Tidak lupa, dibuat IP Address Tree untuk mempermudah visualisasi dari subnetting yang telah dibuat sebagai berikut:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/tree.png">
 
  **<h3>`Tugas C`</h3>**
  
@@ -232,7 +232,7 @@ iface eth0 inet static
 
 - Konfigurasi Routing pada tiap Router:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/routing.png">
 
 Agar client bisa terhubung ke internet, perlu dilakukan konfigurasi iptables pada router yang berhubungan dengan NAT, yaitu Aura. Kemudian, simpan kedalam file `.bashrc.`
 
@@ -394,7 +394,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$IPETH0" -s 10.43.0.
 
 GrobeForest:ping google.com
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/1.png">
 
 <h3>Soal 2</h3>
 
@@ -426,16 +426,12 @@ apt-get install netcat -y
 TurkRegion: nc -l -p 8080
 LaubHills: nc 10.43.8.2 8080
 
-<img width="470" alt="soal 1" src="images/01.png">
-
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/2a.png">
 
 TurkRegion: nc -l -p 1234
 LaubHills: nc 10.43.8.2 1234
 
-<img width="470" alt="soal 1" src="images/01.png">
-
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/2b.png">
 
 <h3>Soal 3</h3>
 
@@ -459,7 +455,7 @@ iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j
 
 Hasil Testing pada 4 Client: ping 10.43.0.22
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/3.png">
 
 <h3>Soal 4</h3>
 
@@ -477,8 +473,9 @@ GrobeForest:
 nmap 10.43.4.3 -p 22
 nmap 10.43.0.10 -p 22
 
-<img width="470" alt="soal 1" src="images/01.png">
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/4a.png">
+
+<img width="470" alt="soal 1" src="images/4b.png">
 
 <h3>Soal 5</h3>
 
@@ -499,7 +496,7 @@ Testing di hari kerja (GrobeForest):
 date --s “14 Dec 2023 10:00:00”
 nmap 10.43.4.3 22
 ```
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/5a.png">
 
 Testing di hari Minggu(GrobeForest:  
 ```
@@ -529,14 +526,14 @@ Testing di hari Kamis jam 12.15 (jam istirahat)GrobeForest:
 nmap 10.43.4.3 -p 22
 ```
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/6a.png">
 
 Testing saat Jumatan:
 ```
 nmap 10.43.4.3 -p 22
 ```
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/6b.png">
 
 <h3>Soal 7</h3>
 
@@ -562,19 +559,19 @@ Catatn: IP Sein 10.43.4.3 dan IP Stark 10.43.0.10
 
 Waktu Masa Pemilu (14 Desember 2023) di Revolte
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/8a.png">
 
 Di Luar Masa Pemilu (14 Desember 2025) di Revolte
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/8b.png">
 
 Waktu Masa Pemilu selain Revolte:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/8c.png">
 
 Di Luar Masa Pemilu selain Revolte:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/8d.png">
 
 <h3>Soal 9</h3>
 
@@ -599,7 +596,7 @@ GrabeForest:
 ping 10.43.4.3 (server Sein) 
 ```
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/9.png">
 
 <h3>Soal 10</h3>
 
@@ -614,7 +611,7 @@ iptables -A INPUT -j LOG --log-level info --log-prefix "DROPPED: "
 
 <h4>Testing</h4> <a name="testing10"></a>
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/10.png">
 (clue: test dengan nmap)
 
 
