@@ -392,9 +392,43 @@ IPETH0="$(ip -br a | grep eth0 | awk '{print $NF}' | cut -d'/' -f1)"
 iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$IPETH0" -s 10.43.0.0/20
 ```
 
+
+`IPETH0="$(ip -br a | grep eth0 | awk '{print $NF}' | cut -d'/' -f1)"` Perintah ini mengambil alamat IP dari antarmuka jaringan eth0 dan menyimpannya dalam variabel lingkungan IPETH0.
+
+lebih detailnya:
+
+`ip -br a`: Perintah ini menampilkan informasi antarmuka jaringan dalam format yang lebih singkat dan mudah dibaca. Opsi -br digunakan untuk menampilkan informasi dalam format yang lebih singkat dan mudah dibaca.
+
+`grep eth0`: Perintah ini memfilter baris yang mengandung string eth0.
+
+`awk '{print $NF}'`: Perintah ini menampilkan kolom terakhir dari baris yang diproses. Dalam hal ini, itu adalah nama antarmuka jaringan eth0.
+
+`cut -d'/' -f1`: Perintah ini memotong string pada karakter / dan mengambil bagian pertama dari string. Dalam hal ini, itu adalah alamat IP antarmuka jaringan eth0.
+
+`iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source "$IPETH0" -s 10.43.0.0/20`: Dengan perintah ini akan menambahkan aturan ke tabel nat pada firewall iptables. 
+
+lebih detailnya:
+
+`iptables`: Perintah ini digunakan untuk mengkonfigurasi firewall iptables.
+
+`-t nat`: Opsi ini menunjukkan bahwa aturan yang ditambahkan ke firewall adalah aturan tabel nat.
+
+`-A POSTROUTING`: Opsi ini menunjukkan bahwa aturan yang ditambahkan ke tabel nat adalah aturan POSTROUTING.
+
+`-o eth0`: Opsi ini menunjukkan bahwa aturan yang ditambahkan hanya berlaku untuk paket yang keluar melalui antarmuka jaringan eth0.
+
+`-j SNAT`: Opsi ini menunjukkan bahwa tindakan yang diambil pada paket yang cocok adalah SNAT.
+
+`--to-source "$IPETH0"`: Opsi ini menunjukkan bahwa alamat IP sumber pada paket yang cocok akan diganti dengan nilai variabel lingkungan $IPETH0.
+
+`-s 10.43.0.0/20`: Opsi ini menunjukkan bahwa aturan yang ditambahkan hanya berlaku untuk paket yang berasal dari jaringan 10.43.0.0/20.
+
 <h4>Testing</h4> <a name="testing1"></a>
 
-GrobeForest:ping google.com
+GrobeForest:
+```
+ping google.com
+```
 
 <img width="470" alt="soal 1" src="images/1.png">
 
@@ -423,15 +457,38 @@ apt-get update
 apt-get install netcat -y
 ```
 
+dengan `echo 'nameserver 192.168.122.1' > /etc/resolv.conf` maka ini menambahkan baris nameserver 192.168.122.1 ke file /etc/resolv.conf. File ini digunakan oleh sistem operasi untuk menentukan server DNS yang digunakan untuk mengonversi nama domain menjadi alamat IP. Baris ini menunjukkan bahwa server DNS yang digunakan adalah 192.168.122.1.
+
+Kemudian dilakukan `apt-get update` untuk mengunduh daftar paket terbaru dari repositori dan memperbarui daftar paket lokal pada sistem.
+
+Selanjutnya dilakukan penginstalan netcat sebagi utilitas jaringan yang digunakan untuk membuka konekti TCP/UDP, mengirim dan menerima data melalui koneksi tersebut dengan perintah `apt-get install netcat -y` .
+
+`iptables -A INPUT -p tcp --dport 8080 -j ACCEPT`: Perintah ini menambahkan aturan ke tabel iptables untuk mengizinkan koneksi TCP ke port 8080. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `--dport 8080` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 8080. Opsi `-j ACCEPT` menunjukkan bahwa koneksi yang cocok harus diterima.
+
+`iptables -A INPUT -p tcp -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi TCP yang masuk. Opsi  `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
+
+iptables `-A INPUT -p udp -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi UDP yang masuk. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p udp` menunjukkan bahwa aturan hanya berlaku untuk koneksi UDP. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
+
 <h4>Testing</h4> <a name="testing2"></a>
 
-TurkRegion: nc -l -p 8080
-LaubHills: nc 10.43.8.2 8080
-
+TurkRegion:
+```
+nc -l -p 8080
+```
+LaubHills:
+```
+nc 10.43.8.2 8080
+```
 <img width="470" alt="soal 1" src="images/2a.png">
 
-TurkRegion: nc -l -p 1234
-LaubHills: nc 10.43.8.2 1234
+TurkRegion: 
+```
+nc -l -p 1234
+```
+LaubHills: 
+```
+nc 10.43.8.2 1234
+```
 
 <img width="470" alt="soal 1" src="images/2b.png">
 
@@ -452,10 +509,16 @@ DHCP Server (Revolte):
 iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 ```
+`iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT`: Perintah ini menambahkan aturan ke tabel iptables untuk mengizinkan koneksi yang sudah terbentuk dan terkait dengan koneksi yang sudah ada. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-m state --state ESTABLISHED,RELATED` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang sudah terbentuk dan terkait dengan koneksi yang sudah ada. Opsi `-j ACCEPT` menunjukkan bahwa koneksi yang cocok harus diterima.
+
+`iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi ICMP yang masuk ke sistem jika jumlah koneksi melebihi 3. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p icmp` menunjukkan bahwa aturan hanya berlaku untuk koneksi ICMP. Opsi `-m connlimit --connlimit-above 3 --connlimit-mask 0` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang melebihi 3. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
 
 <h4>Testing</h4> <a name="testing3"></a>
 
-Hasil Testing pada 4 Client: ping 10.43.0.22
+Hasil Testing pada 4 Client: 
+```
+ping 10.43.0.22
+```
 
 <img width="470" alt="soal 1" src="images/3.png">
 
@@ -469,11 +532,17 @@ Sein dan Stark:
 iptables -A INPUT -p tcp --dport 22 -s 10.43.4.0 -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j DROP
 
+iptables `-A INPUT -p tcp --dport 22 -s 10.43.4.0 -j ACCEPT`: Perintah ini menambahkan aturan ke tabel iptables untuk mengizinkan koneksi TCP ke port 22 dari alamat IP 10.43.4.0. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `--dport 22` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 22. Opsi `-s 10.43.4.0` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang berasal dari alamat IP 10.43.4.0. Opsi `-j ACCEPT` menunjukkan bahwa koneksi yang cocok harus diterima.
+
+`iptables -A INPUT -p tcp --dport 22 -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi TCP yang masuk ke port 22. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `--dport 22` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 22. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
+
 <h4>Testing</h4> <a name="testing4"></a>
 
 GrobeForest: 
+```
 nmap 10.43.4.3 -p 22
 nmap 10.43.0.10 -p 22
+```
 
 <img width="470" alt="soal 1" src="images/4a.jpg">
 
@@ -491,6 +560,10 @@ iptables -A INPUT -p tcp --dport 80 -m time --weekdays Mon,Tue,Wed,Thu,Fri --tim
 iptables -A INPUT -p tcp --dport 80 -j DROP
 ```
 
+`iptables -A INPUT -p tcp --dport 80 -m time --weekdays Mon,Tue,Wed,Thu,Fri --timestart 08:00 --timestop 16:00 -j ACCEPT`: Perintah ini menambahkan aturan ke tabel iptables untuk mengizinkan koneksi TCP ke port 80 pada hari kerja (Senin hingga Jumat) antara pukul 08:00 dan 16:00. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `--dport 80` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 80. Opsi `-m time --weekdays Mon,Tue,Wed,Thu,Fri --timestart 08:00 --timestop 16:00` menunjukkan bahwa aturan hanya berlaku pada hari kerja (Senin hingga Jumat) antara pukul 08:00 dan 16:00. Opsi -j ACCEPT menunjukkan bahwa koneksi yang cocok harus diterima.
+
+`iptables -A INPUT -p tcp --dport 80 -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi TCP yang masuk ke port 80. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `--dport 80` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 80. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
+
 <h4>Testing</h4> <a name="testing5"></a>
 
 Testing di hari kerja (GrobeForest): 
@@ -506,7 +579,7 @@ date --s “17 Dec 2023 10:00:00”
 nmap 10.43.4.3 22
 ```
 
-<h4>Testing</h4> <a name="testing5"></a>
+<img width="470" alt="soal 1" src="images/5b.png">
 
 <h3>Soal 6</h3>
 
@@ -520,6 +593,10 @@ iptables -A INPUT -p tcp --dport 80 -m time --timestart 12:00 --timestop 13:00 -
 
 iptables -A INPUT -p tcp --dport 80 -m time --timestart 11:00 --timestop 13:00 --weekdays Fri -j DROP
 ```
+
+`iptables -A INPUT -p tcp --dport 80 -m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi TCP yang masuk ke port 80 pada hari kerja (Senin hingga Kamis) antara pukul 12:00 dan 13:00. Opsi -A INPUT menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `--dport 80` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 80. Opsi `-m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu` menunjukkan bahwa aturan hanya berlaku pada hari kerja (Senin hingga Kamis) antara pukul 12:00 dan 13:00. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
+
+`iptables -A INPUT -p tcp --dport 80 -m time --timestart 11:00 --timestop 13:00 --weekdays Fri -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi TCP yang masuk ke port 80 pada hari Jumat antara pukul 11:00 dan 13:00. Opsi -A INPUT menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `--dport 80` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 80. Opsi `-m time --timestart 11:00 --timestop 13:00 --weekdays Fri` menunjukkan bahwa aturan hanya berlaku pada hari Jumat antara pukul 11:00 dan 13:00. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
 
 <h4>Testing</h4> <a name="testing6"></a>
 
@@ -554,6 +631,8 @@ Sein dan Stark:
 ```
 iptables -A INPUT -p tcp -s 10.43.0.20/30 --dport 80 -m time --datestart "2023-10-19T00:00" --datestop "2024-02-15T00:00" -j DROP
 ```
+
+`iptables -A INPUT -p tcp -s 10.43.0.20/30 --dport 80 -m time --datestart "2023-10-19T00:00" --datestop "2024-02-15T00:00" -j DROP`: Perintah ini menambahkan aturan ke tabel iptables untuk menolak semua koneksi TCP yang masuk ke port 80 dari jaringan 10.43.0.20/30 antara tanggal 19 Oktober 2023 dan 15 Februari 2024. Opsi `-A INPUT` menunjukkan bahwa aturan ditambahkan ke rantai INPUT pada tabel iptables. Opsi `-p tcp` menunjukkan bahwa aturan hanya berlaku untuk koneksi TCP. Opsi `-s 10.43.0.20/30` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang berasal dari jaringan 10.43.0.20/30. Opsi `--dport 80` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang ditujukan ke port 80. Opsi `-m time --datestart "2023-10-19T00:00" --datestop "2024-02-15T00:00"` menunjukkan bahwa aturan hanya berlaku antara tanggal 19 Oktober 2023 dan 15 Februari 2024. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
 
 <h4>Testing</h4> <a name="testing8"></a>
 
@@ -591,6 +670,18 @@ iptables -A INPUT -m recent --name scan_port --set -j ACCEPT
 iptables -A FORWARD -m recent --name scan_port --set -j ACCEPT
 ```
 
+dengan `iptables -F`: Perintah ini menghapus semua aturan dari semua rantai pada tabel iptables. Ini akan menghapus semua aturan yang sebelumnya ditambahkan ke tabel iptables.
+
+`iptables -N scan_port`: Perintah ini membuat rantai baru bernama scan_port pada tabel iptables. Rantai ini akan digunakan untuk menangani koneksi yang mencoba melakukan pemindaian port.
+
+`iptables -A INPUT -m recent --name scan_port --update --seconds 600 --hitcount 20 -j DROP`: Perintah ini menambahkan aturan ke rantai INPUT pada tabel iptables untuk menolak semua koneksi yang mencoba melakukan pemindaian port. Opsi `-m recent --name scan_port --update --seconds 600 --hitcount 20` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang mencoba melakukan pemindaian port lebih dari 20 kali dalam 10 menit terakhir. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
+
+`iptables -A FORWARD -m recent --name scan_port --update --seconds 600 --hitcount 20 -j DROP`: Perintah ini menambahkan aturan ke rantai FORWARD pada tabel iptables untuk menolak semua koneksi yang mencoba melakukan pemindaian port. Opsi `-m recent --name scan_port --update --seconds 600 --hitcount 20` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang mencoba melakukan pemindaian port lebih dari 20 kali dalam 10 menit terakhir. Opsi `-j DROP` menunjukkan bahwa koneksi yang cocok harus ditolak.
+
+`iptables -A INPUT -m recent --name scan_port --set -j ACCEPT`: Perintah ini menambahkan aturan ke rantai INPUT pada tabel iptables untuk mengizinkan koneksi yang mencoba melakukan pemindaian port. Opsi `-m recent --name scan_port --set` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang mencoba melakukan pemindaian port untuk pertama kalinya. Opsi `-j ACCEPT` menunjukkan bahwa koneksi yang cocok harus diterima.
+
+`iptables -A FORWARD -m recent --name scan_port --set -j ACCEPT`: Perintah ini menambahkan aturan ke rantai FORWARD pada tabel iptables untuk mengizinkan koneksi yang mencoba melakukan pemindaian port. Opsi `-m recent --name scan_port --set` menunjukkan bahwa aturan hanya berlaku untuk koneksi yang mencoba melakukan pemindaian port untuk pertama kalinya. Opsi `-j ACCEPT` menunjukkan bahwa koneksi yang cocok harus diterima.
+
 <h4>Testing</h4> <a name="testing9"></a>
 
 GrabeForest: 
@@ -610,6 +701,8 @@ Semua router dan server:
 ```
 iptables -A INPUT -j LOG --log-level info --log-prefix "DROPPED: "
 ```
+Perintah `iptables -A INPUT -j LOG --log-level info --log-prefix "DROPPED: "` menambahkan aturan ke rantai INPUT pada tabel iptables untuk menulis pesan log ke sistem ketika paket ditolak. Opsi `-j LOG` menunjukkan bahwa pesan log harus ditulis ke sistem. Opsi `--log-level info` menunjukkan bahwa pesan log harus ditulis dengan level informasi. Opsi `--log-prefix "DROPPED: " ` menunjukkan bahwa pesan log harus dimulai dengan string "DROPPED: ".
+
 
 <h4>Testing</h4> <a name="testing10"></a>
 
