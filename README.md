@@ -49,7 +49,7 @@ Untuk menghitung rute-rute yang diperlukan, gunakan perhitungan dengan metode VL
 
 - Pengelompokan pada topologi yang telah dibuat:
 
-<img width="470" alt="soal 1" src="images/labelling.png">
+<img width="470" alt="soal 1" src="images/labelling.jpg">
 
 - Selanjutnya, dilakukan analisis sehingga didapatkan hasil sebagai berikut:
 
@@ -61,11 +61,13 @@ Untuk menghitung rute-rute yang diperlukan, gunakan perhitungan dengan metode VL
 
 - Tidak lupa, dibuat IP Address Tree untuk mempermudah visualisasi dari subnetting yang telah dibuat sebagai berikut:
 
-<img width="470" alt="soal 1" src="images/tree.png">
+<img width="470" alt="soal 1" src="images/tree vlsm.png">
 
  **<h3>`Tugas C`</h3>**
  
 Kemudian buatlah rute sesuai dengan pembagian IP yang kalian lakukan!
+
+Pada poin ini, dilakukan beberapa konfigurasi yang meliputi konfigurasi IP Address tiap node, konfigurasi routing, serta konfigurasi node server.
 
 - Konfigurasi IP Address tiap Node:
 
