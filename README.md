@@ -31,7 +31,7 @@ Tugas pertama yaitu membuat topologi jaringan sesuai dengan rancangan yang diber
 
 Hasil Topologi yang sudah dibuat:
 
-<img width="470" alt="soal 1" src="images/01.png">
+<img width="470" alt="soal 1" src="images/hasil topologi.png">
 
 Terdapat beberapa node yang memiliki peran khusus, yaitu sebagai berikut:
 
