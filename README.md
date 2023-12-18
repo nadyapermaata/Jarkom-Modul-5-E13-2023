@@ -473,7 +473,7 @@ GrobeForest:
 nmap 10.43.4.3 -p 22
 nmap 10.43.0.10 -p 22
 
-<img width="470" alt="soal 1" src="images/4a.png">
+<img width="470" alt="soal 1" src="images/4a.jpg">
 
 <img width="470" alt="soal 1" src="images/4b.png">
 
