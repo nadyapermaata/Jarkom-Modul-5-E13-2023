@@ -621,7 +621,6 @@ Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Se
 <h4>Solusi</h4> <a name="solusi7"></a>
 
 <h4>Testing</h4> <a name="testing7"></a>
-<img width="470" alt="soal 1" src="images/7.png">
 
 <h3>Soal 8</h3>
 
