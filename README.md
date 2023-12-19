@@ -620,7 +620,65 @@ Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Se
 
 <h4>Solusi</h4> <a name="solusi7"></a>
 
+Heiter:
+```
+iptables -A PREROUTING -t nat -p tcp --dport 80 -d 10.43.4.3 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.43.4.3:80
+iptables -A PREROUTING -t nat -p tcp --dport 80 -d 10.43.4.3 -j DNAT --to-destination 10.43.0.10:80
+iptables -A PREROUTING -t nat -p tcp --dport 443 -d 10.43.0.10 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.43.0.10:443
+iptables -A PREROUTING -t nat -p tcp --dport 443 -d 10.43.0.10 -j DNAT --to-destination 10.43.4.3:443
+```
+
+Penjelasan detail:
+
+
+`iptables -A PREROUTING -t nat -p tcp --dport 80 -d 10.43.4.3 -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination 10.43.4.3:80`
+
+- `iptables -A PREROUTING`: Menambahkan aturan ke chain PREROUTING.
+  
+- `-t nat`: Menentukan tabel nat (Network Address Translation).
+
+- `-p tcp``: Menentukan protokol tcp.
+
+- `--dport 80`: Menentukan port tujuan 80.
+  
+- `-d 10.43.4.3`: Menentukan alamat IP tujuan 10.43.4.3.
+
+- `-m statistic`: Menggunakan modul statistic.
+  
+- `--mode nth`: Menentukan mode nth.
+  
+- `--every 2`: Menentukan bahwa setiap paket kedua akan dipilih.
+  
+- `--packet 0`: Menentukan paket pertama yang akan dipilih.
+  
+- `-j DNAT`: Menentukan target lompatan DNAT (Destination NAT).
+  
+- `--to-destination 10.43.4.3:80` : Menentukan alamat tujuan baru 10.43.4.3 dan port 80.
+  
+`iptables -A PREROUTING -t nat -p tcp --dport 80 -d 10.43.4.3 -j DNAT --to-destination 10.43.0.10:80`
+
+- `iptables -A PREROUTING`: Menambahkan aturan ke chain PREROUTING.
+  
+- `-t nat`: Menentukan tabel nat (Network Address Translation).
+  
+- `-p tcp`: Menentukan protokol tcp.
+  
+- `--dport 80`: Menentukan port tujuan 80.
+  
+- `-d 10.43.4.3`: Menentukan alamat IP tujuan 10.43.4.3.
+  
+- `-j DNAT`: Menentukan target lompatan DNAT (Destination NAT).
+  
+- `--to-destination 10.43.0.10:80`: Menentukan alamat tujuan baru 10.43.0.10 dan port 80.
+
 <h4>Testing</h4> <a name="testing7"></a>
+
+```
+curl 10.43.4.3:80
+curl 10.43.0.10:443
+```
+
+<img width="470" alt="soal 1" src="images/8a.png">
 
 <h3>Soal 8</h3>
 
