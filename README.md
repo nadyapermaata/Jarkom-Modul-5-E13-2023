@@ -673,12 +673,13 @@ Penjelasan detail:
 
 <h4>Testing</h4> <a name="testing7"></a>
 
+TurkRegion:
+
 ```
 curl 10.43.4.3:80
 curl 10.43.0.10:443
 ```
-
-<img width="470" alt="soal 1" src="images/8a.png">
+<img width="470" alt="soal 1" src="images/7.png">
 
 <h3>Soal 8</h3>
 
