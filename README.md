@@ -619,7 +619,9 @@ nmap 10.43.4.3 -p 22
 Karena terdapat 2 WebServer, kalian diminta agar setiap client yang mengakses Sein dengan Port 80 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan dan request dari client yang mengakses Stark dengan port 443 akan didistribusikan secara bergantian pada Sein dan Stark secara berurutan.
 
 <h4>Solusi</h4> <a name="solusi7"></a>
+
 <h4>Testing</h4> <a name="testing7"></a>
+<img width="470" alt="soal 1" src="images/7.png">
 
 <h3>Soal 8</h3>
 
@@ -707,6 +709,3 @@ Perintah `iptables -A INPUT -j LOG --log-level info --log-prefix "DROPPED: "` me
 <h4>Testing</h4> <a name="testing10"></a>
 
 <img width="470" alt="soal 1" src="images/10.png">
-(clue: test dengan nmap)
-
-
